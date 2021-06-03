@@ -8,17 +8,20 @@ const ticTacToe = (() => {
                 if (turn == 'X') {
                     jimmie.chooseLocation(document.getElementById(this.getAttribute('id')))
                     jimmiesMoves.push(parseInt(this.getAttribute('id')))
+                    if(ticTacToe.findWinningCombinations(jimmiesMoves)) {
+                        setTimeout(function () { 
+                            if(!alert('Jimmie Wins!')){ticTacToe.newGame()};
+                         }, 1);
+                    }
                 } else {
                     jeff.chooseLocation(document.getElementById(this.getAttribute('id')))
                     jeffsMoves.push(parseInt(this.getAttribute('id')))
+                    if (ticTacToe.findWinningCombinations(jeffsMoves)) {
+                        setTimeout(function () {
+                            if(!alert('Jeff Wins!')){ticTacToe.newGame()};
+                        }, 1);
+                    }
                 }
-                if (ticTacToe.findWinningCombinations(jimmiesMoves)) {
-                    alert('Jimmy Wins!')
-                } else if (ticTacToe.findWinningCombinations(jeffsMoves)) {
-                    alert('Jeff Wins!')
-                }
-                ticTacToe.findWinningCombinations(jimmiesMoves)
-                ticTacToe.findWinningCombinations(jeffsMoves)
                 ticTacToe.nextTurn()
             }
             else {
@@ -62,12 +65,10 @@ const ticTacToe = (() => {
             ];
             for (const combination of winningCombinations) {
                 const [a, b, c] = combination
-                console.log(array)
                 if (ticTacToe.hasSubArray(array, combination)) {
                     console.log(combination)
                     return combination
-                }
-                return null
+                }              
             }
         },
         hasSubArray: function(masterArray, subArray) {
@@ -80,6 +81,12 @@ const ticTacToe = (() => {
             var node = document.querySelector('.container');
             node.querySelectorAll('*').forEach(n => n.remove());
             node.remove()
+        },
+        newGame: function() {
+            ticTacToe.emptyDisplay()
+            ticTacToe.displayController()
+            jimmiesMoves = []
+            jeffsMoves = []
         }
     };
 
