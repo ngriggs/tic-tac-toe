@@ -4,20 +4,29 @@ const ticTacToe = (() => {
     let jeffsMoves = []
     return {
         gameBoard: function() {
-            console.log(this.getAttribute('id'))
-
-            if (turn == 'X') {
-                jimmie.chooseLocation(document.getElementById(this.getAttribute('id')))
-                jimmiesMoves.push(parseInt(this.getAttribute('id')))
-            } else {
-                jeff.chooseLocation(document.getElementById(this.getAttribute('id')))
-                jeffsMoves.push(parseInt(this.getAttribute('id')))
+            if (ticTacToe.isInProgress()) {
+                if (turn == 'X') {
+                    jimmie.chooseLocation(document.getElementById(this.getAttribute('id')))
+                    jimmiesMoves.push(parseInt(this.getAttribute('id')))
+                } else {
+                    jeff.chooseLocation(document.getElementById(this.getAttribute('id')))
+                    jeffsMoves.push(parseInt(this.getAttribute('id')))
+                }
+                if (ticTacToe.findWinningCombinations(jimmiesMoves)) {
+                    alert('Jimmy Wins!')
+                } else if (ticTacToe.findWinningCombinations(jeffsMoves)) {
+                    alert('Jeff Wins!')
+                }
+                ticTacToe.findWinningCombinations(jimmiesMoves)
+                ticTacToe.findWinningCombinations(jeffsMoves)
+                ticTacToe.nextTurn()
             }
-            console.log(jimmiesMoves)
-            console.log(jeffsMoves)
-            ticTacToe.findWinningCombinations(jimmiesMoves)
-            ticTacToe.findWinningCombinations(jeffsMoves)
-            ticTacToe.nextTurn()
+            else {
+                ticTacToe.emptyDisplay()
+                ticTacToe.displayController()
+            }
+            
+
         },
         displayController: function() {
             const bodyH1Selector = document.querySelector('body').querySelector('h1')
@@ -51,8 +60,26 @@ const ticTacToe = (() => {
                 [0, 4, 8],
                 [2, 4, 6]
             ];
-            const found = array.some(r=> winningCombinations.includes(r))
-            console.log(found)
+            for (const combination of winningCombinations) {
+                const [a, b, c] = combination
+                console.log(array)
+                if (ticTacToe.hasSubArray(array, combination)) {
+                    console.log(combination)
+                    return combination
+                }
+                return null
+            }
+        },
+        hasSubArray: function(masterArray, subArray) {
+            return subArray.every((i => v => i = masterArray.indexOf(v, i) + 1)(0));
+        },
+        isInProgress: function() {
+            return (jimmiesMoves.length + jeffsMoves.length) < 9;
+        },
+        emptyDisplay: function() {
+            var node = document.querySelector('.container');
+            node.querySelectorAll('*').forEach(n => n.remove());
+            node.remove()
         }
     };
 
