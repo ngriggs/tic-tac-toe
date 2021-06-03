@@ -72,7 +72,8 @@ const ticTacToe = (() => {
             }
         },
         hasSubArray: function(masterArray, subArray) {
-            return subArray.every((i => v => i = masterArray.indexOf(v, i) + 1)(0));
+            return subArray.every((i => v => i = masterArray.indexOf(v, i) + 1)(0)) || 
+            subArray.reverse().every((i => v => i = masterArray.indexOf(v, i) + 1)(0));
         },
         isInProgress: function() {
             return (jimmiesMoves.length + jeffsMoves.length) < 9;
